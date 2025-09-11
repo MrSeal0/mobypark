@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "moby-dick",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
