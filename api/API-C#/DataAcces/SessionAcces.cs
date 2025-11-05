@@ -18,7 +18,7 @@ public class SessionAcces : AAcces
     }
     public int UidFromSession(string session)
     {
-        string sql = $"SELECT UserID FROM {Table()} WHERE Session = @Session";
+        string sql = $"SELECT UserID FROM {Table()} WHERE SessionID = @Session";
         return _con.QueryFirstOrDefault<int>(sql, new { Session = session });
     }
 }

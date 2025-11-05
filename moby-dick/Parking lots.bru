@@ -1,0 +1,26 @@
+meta {
+  name: Parking lots
+  type: http
+  seq: 8
+}
+
+post {
+  url: http://localhost:5030/parking-lots/28/sessions/start
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: A8-97-87-10-91-F8-00-7F-30-DF-03-D8-1C-C6-EF-2A-94-1E-6E-E8-D9-74-ED-F8-EC-75-81-72-3A-0F-EA-9C
+}
+
+body:json {
+  {
+    "licenseplate" : "ttttt"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
