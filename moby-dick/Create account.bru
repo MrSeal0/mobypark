@@ -1,0 +1,26 @@
+meta {
+  name: Create account
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:5030/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "felixptest",
+    "password": "testpassw123",
+    "name": "Felix Paak",
+    "email": "1099491@hr.nl",
+    "phone": "109238231",
+    "byear": 2006
+  }
+}
+
+settings {
+  encodeUrl: true
+}

@@ -19,19 +19,4 @@ public class PaymentsController : ControllerBase
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
     }
-
-    public void Get()
-    {
-        return 5;
-    }
-
-    public void Put()
-    {
-        return 5;
-    }
-
-    public void Delete()
-    {
-        return 5;
-    }
 }

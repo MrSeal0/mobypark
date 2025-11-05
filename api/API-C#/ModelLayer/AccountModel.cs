@@ -10,6 +10,5 @@ public class AccountModel
         Username = username;
         HashedPassword = hashedPassword;
         Name = name;
-        SessionToken = // add random generator
     }
 }
