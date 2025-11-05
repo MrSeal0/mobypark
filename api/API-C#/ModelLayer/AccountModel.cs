@@ -1,14 +1,13 @@
 public class AccountModel
 {
-    public required string Username { get; set; }
-    public required string HashedPassword { get; set; }
-    public required string Name { get; set; }
-    public required string SessionToken { get; set; }
-
-    public AccountModel(string username, string hashedPassword, string name)
-    {
-        Username = username;
-        HashedPassword = hashedPassword;
-        Name = name;
-    }
+    public int ID { get; set; }
+    public string? username { get;  set; }
+    public string? password { get;  set; }
+    public string? name { get;  set; }
+    public string? email { get;  set; }
+    public string? phone { get;  set; }
+    public string? role { get;  set; }
+    public DateTime cdate { get;  set; }
+    public int byear { get;  set; }
+    public int active { get;  set; }
 }

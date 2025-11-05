@@ -27,7 +27,7 @@ public class RegisterController : ControllerBase
 
     public string Post([FromBody] RegisterRequest userinfo)
     {
-        Console.Write("Received request");
+        userinfo.password = Encryption.Hash(userinfo.password);
         RegisterLogic logic = new();
         HttpStatusCode result = logic.CreateAccount(userinfo);
         Response.StatusCode = (int)result;

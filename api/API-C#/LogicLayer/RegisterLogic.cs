@@ -5,7 +5,7 @@ public class RegisterLogic
 {
     public HttpStatusCode CreateAccount(RegisterRequest userinfo)
     {
-        RegisterAcces acces = new();
+        UsersAcces acces = new();
         if (acces.IsTaken(userinfo.username))
         {
             return HttpStatusCode.Conflict;

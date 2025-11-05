@@ -14,7 +14,7 @@ public class PaymentsController : ControllerBase
 
     public void Post()
     {
-        if(!Request.Headers.TryGetValue("Authorization", out var sessionKey) || !SessionManager.get_session(sessionKey))
+        if(!Request.Headers.TryGetValue("Authorization", out var sessionKey))
         {
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
