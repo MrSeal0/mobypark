@@ -1,2 +1,8 @@
-api/data
+api/data/pdata
+api/data/discounts.csv
+api/data/parking-lots.json
+api/data/payments.json
+api/data/reservations.json
+api/data/users.json
+api/data/vehicles.json
 tool/node_modules/
