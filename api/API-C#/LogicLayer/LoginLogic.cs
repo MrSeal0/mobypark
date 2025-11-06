@@ -6,12 +6,12 @@ public class LoginLogic
     UsersAcces _acces = new();
     SessionLogic _sessionlogic = new();
     
-    public string Login(LoginRequest uinfo)
+    public string Login(LoginRequest userInfo)
     {
-        AccountModel user = _acces.GetByUsername(uinfo.username);
+        AccountModel user = _acces.GetByUsername(userInfo.username);
         if (user is not null)
         {
-            if (uinfo.password == user.password)
+            if (userInfo.password == user.password)
             {
                 return  _sessionlogic.CreateSession(user.ID);
             }
