@@ -57,6 +57,7 @@ public class ParkinglotsController : ControllerBase
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             return "Cannot stop a session when there is no session for this licesenplate.";
         }
+
         _parkinglotsessionslogic.StopParkingSession(data.Licenseplate);
         Response.StatusCode = (int)HttpStatusCode.OK;
         return $"Session stopped for {data.Licenseplate}";

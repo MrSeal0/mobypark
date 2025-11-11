@@ -7,7 +7,7 @@ public class ParkingSessionsAcces : AAcces
 
     public bool IsParked(string licenseplate)
     {
-        string sql = $"SELECT EXISTS(SELECT 1 FROM {Table()} WHERE license_plate = @Plate AND end_time != NULL LIMIT 1)";
+        string sql = $"SELECT EXISTS(SELECT 1 FROM {Table()} WHERE license_plate = @Plate AND end_time IS NULL LIMIT 1)";
         return _con.QueryFirstOrDefault<bool>(sql, new { Plate = licenseplate });
     }
 
@@ -17,9 +17,15 @@ public class ParkingSessionsAcces : AAcces
         _con.Execute(sql, new { PLid = plid, Uid = uid, LP = licenseplate, ST = DateTime.Now, PS = "pending" });
     }
 
-    public void StopParkSession(string licenseplate)
+    public ParkingSessionModel GetCurrentSession(string licenseplate)
     {
-        string gettimesql = $"";
-        string sql = $"UPDATE {Table()} SET end_time = @ET, duration";
+        string sql = $"SELECT * FROM {Table()} WHERE license_plate = @lp AND end_time IS NULL;";
+        return _con.QueryFirstOrDefault<ParkingSessionModel>(sql, new { lp = licenseplate });
+    }
+
+    public void EndParkingSession(ParkingSessionModel info)
+    {
+        string sql = $"UPDATE {Table()} SET end_time = @end_time, duration_minutes = @duration_minutes, cost = @cost WHERE ID = @ID";
+        _con.Execute(sql, info);
     }
 }
