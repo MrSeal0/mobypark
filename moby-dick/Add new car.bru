@@ -1,0 +1,26 @@
+meta {
+  name: Add new car
+  type: http
+  seq: 11
+}
+
+post {
+  url: http://localhost:5030/vehicles
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: 23-56-80-6B-92-AD-73-2A-85-B2-B9-45-34-F6-95-3A-91-C3-95-63-53-F4-AE-AE-0C-1B-62-E1-80-05-05-A8
+}
+
+body:json {
+  {
+    "licenseplate" : "XR-TT-13"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

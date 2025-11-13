@@ -27,7 +27,7 @@ public class ParkinglotsController : ControllerBase
         if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null)
         {
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            return "Invalid session";
+            return "Unauthorized: Invalid or missing session token";
         }
 
         AccountModel user = _sessionlogic.GetUserBySession(sessionkey);

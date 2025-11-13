@@ -1,0 +1,11 @@
+public class VehicleModel
+{
+    public int ID { get; set; }
+    public int user_id { get; set; }
+    public string licenseplate { get; set; }
+    public string make { get; set; }
+    public string model { get; set; }
+    public string color { get; set; }
+    public int year { get; set; }
+    public string created_at { get; set; }
+}

@@ -1,0 +1,35 @@
+meta {
+  name: get vehicle data
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://opendata.rdw.nl/api/v3/views/m9d7-ebf2/query.json
+  body: text
+  auth: inherit
+}
+
+headers {
+  X-App-Token: sRpAsJZsSzxNrewnBBkzrbkAn
+  Content-Type: text/plain
+}
+
+body:json {
+  {
+    "query": {
+      "where": "kenteken='XRTT13'",
+      "limit": 5
+    }
+  }
+}
+
+body:text {
+  SELECT * WHERE kenteken='XRTT13' LIMIT 1
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

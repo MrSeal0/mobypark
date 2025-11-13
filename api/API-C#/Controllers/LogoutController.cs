@@ -24,7 +24,7 @@ public class LogoutController : ControllerBase
         else
         {
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            return "Missing session credentials";
+            return "Unauthorized: Invalid or missing session token";
         }
     }
 }
