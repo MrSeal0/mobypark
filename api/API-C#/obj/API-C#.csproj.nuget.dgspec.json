@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Felix\\Documents\\moby\\moby-dick\\api\\API-C#\\API-C#.csproj": {}
+    "C:\\Users\\joris\\Informatica HR\\GitHub\\moby-dick\\api\\API-C#\\API-C#.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Felix\\Documents\\moby\\moby-dick\\api\\API-C#\\API-C#.csproj": {
+    "C:\\Users\\joris\\Informatica HR\\GitHub\\moby-dick\\api\\API-C#\\API-C#.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Felix\\Documents\\moby\\moby-dick\\api\\API-C#\\API-C#.csproj",
+        "projectUniqueName": "C:\\Users\\joris\\Informatica HR\\GitHub\\moby-dick\\api\\API-C#\\API-C#.csproj",
         "projectName": "API-C#",
-        "projectPath": "C:\\Users\\Felix\\Documents\\moby\\moby-dick\\api\\API-C#\\API-C#.csproj",
-        "packagesPath": "C:\\Users\\Felix\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Felix\\Documents\\moby\\moby-dick\\api\\API-C#\\obj\\",
+        "projectPath": "C:\\Users\\joris\\Informatica HR\\GitHub\\moby-dick\\api\\API-C#\\API-C#.csproj",
+        "packagesPath": "C:\\Users\\joris\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\joris\\Informatica HR\\GitHub\\moby-dick\\api\\API-C#\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Felix\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\joris\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[2.1.66, )"
             },
+            "Konscious.Security.Cryptography.Argon2": {
+              "target": "Package",
+              "version": "[1.3.1, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.3, )"
@@ -76,7 +80,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
