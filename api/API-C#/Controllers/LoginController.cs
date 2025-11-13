@@ -22,7 +22,6 @@ public class LoginController : ControllerBase
     public AuthResult Post([FromBody] LoginRequest userinfo)
     {
         LoginLogic _logic = new();
-        userinfo.password = Encryption.Hash(userinfo.password);
 
         string? key = _logic.Login(userinfo);
         if (key is not null)

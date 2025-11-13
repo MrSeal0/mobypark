@@ -29,4 +29,10 @@ public class UsersAcces : AAcces
         string sql = $"SELECT * FROM {Table()} WHERE username = @Username";
         return _con.QueryFirstOrDefault<AccountModel>(sql, new { Username = username });
     }
+
+    public void UpdatePasswordByUsername(string username, string password)
+    {
+        string sql = $"Update {Table()} SET password = @Password WHERE username = @Username";
+        _con.Execute(sql, new { Password = password, Username = username });
+    }
 }
