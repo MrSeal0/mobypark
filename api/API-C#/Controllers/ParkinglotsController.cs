@@ -24,13 +24,13 @@ public class ParkinglotsController : ControllerBase
     [HttpPost("{lid}/sessions/start")]
     public string StartSession(string lid, [FromBody] SessionRequest data)
     {
-        if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null)
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionlogic.GetUserBySession(sessionKey) == null)
         {
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             return "Invalid session";
         }
 
-        AccountModel user = _sessionlogic.GetUserBySession(sessionkey);
+        AccountModel user = _sessionlogic.GetUserBySession(sessionKey);
 
         if (_parkinglotsessionslogic.IsParked(data.Licenseplate))
         {
