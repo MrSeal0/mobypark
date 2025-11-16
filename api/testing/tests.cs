@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Data.Sqlite;
 using Dapper;
 
-// adjust these namespaces if your project uses different ones
+
 using API_C_.LogicLayer;    // Encryption
 using API_C_.DataAcces;     // UsersAcces, SessionAcces, ParkingSessionsAcces
 using API_C_.Controllers;   // RegisterRequest
