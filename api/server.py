@@ -9,6 +9,7 @@ import session_calculator as sc
 
 class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
+        #implemented register
         if self.path == "/register":
             data  = json.loads(self.rfile.read(int(self.headers.get("Content-Length", -1))))
             username = data.get("username")
@@ -34,7 +35,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b"User created")
 
-
+        #implemented login user
         elif self.path == "/login":
             data  = json.loads(self.rfile.read(int(self.headers.get("Content-Length", -1))))
             username = data.get("username")
@@ -67,7 +68,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b"User not found")
 
-
+        ##implemented sessions, need to add the creation of lots
         elif self.path.startswith("/parking-lots"):
             token = self.headers.get('Authorization')
             if not token or not get_session(token):
@@ -147,7 +148,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(f"Parking lot saved under ID: {new_lid}".encode('utf-8'))
 
-
+        # wip
         elif self.path == "/reservations":
             token = self.headers.get('Authorization')
             if not token or not get_session(token):
@@ -194,6 +195,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({"status": "Success", "reservation": data}).encode("utf-8"))
             return
 
+        #implemented add vehicle to db
         elif self.path == "/vehicles":
             token = self.headers.get('Authorization')
             if not token or not get_session(token):
@@ -235,7 +237,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({"status": "Success", "vehicle": data}).encode("utf-8"))
             return
 
-
+        ##never used
         elif self.path.startswith("/vehicles/"):
             token = self.headers.get('Authorization')
             if not token or not get_session(token):
@@ -268,7 +270,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({"status": "Accepted", "vehicle": vehicles[session_user["username"]][lid]}).encode("utf-8"))
             return
 
-
+        # wip
         elif self.path.startswith("/payments"):
             token = self.headers.get('Authorization')
             if not token or not get_session(token):
@@ -328,6 +330,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             return
 
     def do_PUT(self):
+        #wip
         if self.path.startswith("/parking-lots/"):
             lid = self.path.split("/")[2]
             parking_lots = load_parking_lot_data()
@@ -361,7 +364,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                     self.wfile.write(b"Parking lot not found")
                     return
 
-
+        #wip
         elif self.path == "/profile":
             token = self.headers.get('Authorization')
             if not token or not get_session(token):
@@ -381,7 +384,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b"User updated succesfully")
 
-
+        # wip
         elif self.path.startswith("/reservations/"):
             data  = json.loads(self.rfile.read(int(self.headers.get("Content-Length", -1))))
             reservations = load_reservation_data()
@@ -426,7 +429,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                     self.wfile.write(b"Reservation not found")
                     return
 
-
+        # IMPLEMTED (change nickname of car)
         elif self.path.startswith("/vehicles/"):
             token = self.headers.get('Authorization')
             if not token or not get_session(token):

@@ -6,12 +6,6 @@ using Microsoft.Extensions.WebEncoders.Testing;
 
 namespace API_C_.Controllers;
 
-public class LoginRequest
-{
-    public required string username { get;  set; }
-    public required string password { get;  set; }
-}
-
 [ApiController]
 [Route("[controller]")]
 

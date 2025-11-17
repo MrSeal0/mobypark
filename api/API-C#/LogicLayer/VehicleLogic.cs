@@ -24,15 +24,20 @@ public class VehicleLogic
         return GetVehicleByPlate(plate) != null ? true : false;
     }
 
-    public bool DoesUserOwnCarByPlate(string token, string plate)
+    public bool DoesUserOwnCar(string token, string plate)
     {
-        VehicleModel vehicle = GetVehicleByPlate(plate);
-        return _sessionacces.UidFromSession(token) == vehicle.user_id ? true : false;
+        VehicleModel result = GetVehicleByPlate(plate);
+        if (result == null) return false;
+
+        return _sessionacces.UidFromSession(token) == result.user_id;
     }
 
-    public bool DoesUserOwnCarByID(string token, int id)
+    public bool DoesUserOwnCar(string token, int id)
     {
-        return DoesUserOwnCarByPlate(token, _acces.GetLicensePlateByID(id));
+        VehicleModel result = GetVehicleByID(id);
+        if (result == null) return false;
+
+        return _sessionacces.UidFromSession(token) == result.user_id;
     }
 
     public async Task<bool> CreateVehicle(string plate, string token)
@@ -58,5 +63,15 @@ public class VehicleLogic
     public VehicleModel GetVehicleByID(int id)
     {
         return _acces.GetVehicleByID(id);
+    }
+
+    public void ChangeCarNickname(int id, string name)
+    {
+        _acces.ChangeCarName(id, name);
+    }
+
+    public void DeleteCar(int id)
+    {
+        _acces.DeletedCar(id);
     }
 }

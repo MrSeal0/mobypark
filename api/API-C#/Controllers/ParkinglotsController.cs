@@ -4,12 +4,6 @@ using System.Net;
 
 namespace API_C_.Controllers;
 
-
-public class SessionRequest
-{
-    public required string Licenseplate { get; set; }
-}
-
 [ApiController]
 [Route("parking-lots")]
 
@@ -22,7 +16,7 @@ public class ParkinglotsController : ControllerBase
     [HttpPost(Name = "parking-lots")]
 
     [HttpPost("{lid}/sessions/start")]
-    public string StartSession(string lid, [FromBody] SessionRequest data)
+    public string StartSession(string lid, [FromBody] ParkingSessionRequest data)
     {
         if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null)
         {
@@ -44,7 +38,7 @@ public class ParkinglotsController : ControllerBase
     }
 
     [HttpPost("{lid}/sessions/stop")]
-    public string StopSession(string lid, [FromBody] SessionRequest data)
+    public string StopSession(string lid, [FromBody] ParkingSessionRequest data)
     {
         if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null)
         {

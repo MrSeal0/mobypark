@@ -8,4 +8,7 @@ public class VehicleModel
     public string color { get; set; }
     public int year { get; set; }
     public string created_at { get; set; }
+    public string name { get; set; }
+    public DateTime deleted_at { get; set; }
+    public int isdeleted { get; set; }
 }
