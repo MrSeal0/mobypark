@@ -11,7 +11,16 @@ public class PaymentModel
 
     public override string ToString()
     {
-        return "";
+        string result = "";
+        if(CompletedAt != null)
+        {
+            result += "completed: True";
+        }
+        else
+        {
+            result += "completed: false";
+        }
+        return result;
     }
 
 }

@@ -17,6 +17,8 @@ public class PaymentsController : ControllerBase
     SessionLogic _sessionLogic = new();
     PaymentAcces _paymentAcces = new();
 
+    //Post
+
     [HttpGet(Name = "Payments")]
 
     public void GetPayment([FromBody] PaymentRequest data)
