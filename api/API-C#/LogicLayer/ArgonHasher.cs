@@ -28,7 +28,7 @@ public class ArgonHasher
         Array.Copy(hash, 0, combinedBytes, salt.Length, hash.Length);
 
         // Convert to base64 for storage
-        return Convert.ToBase64String(combinedBytes);
+        return "$argon2=" + Convert.ToBase64String(combinedBytes);
     }
 
     private byte[] HashPassword(string password, byte[] salt)
@@ -46,6 +46,8 @@ public class ArgonHasher
 
     public bool VerifyPassword(string password, string hashedPassword)
     {
+        hashedPassword = hashedPassword.Split('=')[1];
+
         // Decode the stored hash
         byte[] combinedBytes = Convert.FromBase64String(hashedPassword);
 

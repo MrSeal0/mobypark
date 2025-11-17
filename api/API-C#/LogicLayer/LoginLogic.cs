@@ -14,7 +14,7 @@ public class LoginLogic
 
         if (user is not null)
         {
-            if (hasher.VerifyPassword(userInfo.password, user.password))
+            if (user.password.StartsWith("$argon2=") && hasher.VerifyPassword(userInfo.password, user.password))
             {
                 return  _sessionlogic.CreateSession(user.ID);
             }
