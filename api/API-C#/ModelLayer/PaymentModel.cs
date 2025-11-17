@@ -9,18 +9,4 @@ public class PaymentModel
     public string Initiator { get; set; } = string.Empty;
     public string Transaction { get; set; } = string.Empty;
 
-    public override string ToString()
-    {
-        string result = "";
-        if(CompletedAt != null)
-        {
-            result += "completed: True";
-        }
-        else
-        {
-            result += "completed: false";
-        }
-        return result;
-    }
-
 }

@@ -16,58 +16,61 @@ public class PaymentRequest
 public class PaymentsController : ControllerBase
 {
     SessionLogic _sessionLogic = new();
-    PaymentAcces _paymentAcces = new();
+    PaymentLogic _paymentLogic = new();
 
     //Post
 
     [HttpPost(Name = "Payments")]
 
-    public ActionResult<string> GetPayment([FromBody] PaymentRequest data)
+    public ActionResult<PaymentModel> PostPayment()
     {
         if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
         {
-            return Unauthorized("invalid token");
+            return Unauthorized();
         }
 
         AccountModel user = _sessionLogic.GetUserBySession(sessionKey);
 
-        PaymentModel paymentinfo = _paymentAcces.GetPaymentByInitiator(user.username);
+        PaymentModel paymentinfo = _paymentLogic.GetPaymentByInitiator(user.username);
 
-        Response.StatusCode = (int)HttpStatusCode.OK;
         return Ok(paymentinfo);
     }
 
     [HttpPost("payments/refund")]
 
-    public ActionResult<PaymentModel> GetRefund()
+    public ActionResult<PaymentModel> PostRefund()
     {
         if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
         {
-            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Unauthorized();
         }
 
         AccountModel user = _sessionLogic.GetUserBySession(sessionKey);
 
         if (user.role != "Admin")
         {
-            return Unauthorized("");
+            return Unauthorized();
         }
 
-        PaymentModel paymentinfo = _paymentAcces.GetPaymentByInitiator(user.username);
+        PaymentModel paymentinfo = _paymentLogic.GetPaymentByInitiator(user.username);
         return Ok(paymentinfo);
     }
 
 
-    public void Put()
+    public ActionResult<string> PutPayment([FromBody] PaymentRequest data)
     {
-        if (!Request.Headers.TryGetValue("Authorization", out var sessionKey))
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
         {
-            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Unauthorized("no authorization");
         }
+        
+        
+
+        return Ok("Payment succesful");
 
     }
 
-    public void Get()
+    public void GetPayment()
     {
         if (!Request.Headers.TryGetValue("Authorization", out var sessionKey))
         {
