@@ -19,7 +19,7 @@ public class PaymentsController : ControllerBase
 
     //Post
 
-    [HttpGet(Name = "Payments")]
+    [HttpPost(Name = "Payments")]
 
     public void GetPayment([FromBody] PaymentRequest data)
     {
