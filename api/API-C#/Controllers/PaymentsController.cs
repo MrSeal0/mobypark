@@ -3,10 +3,11 @@ using System.Net.Cache;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API_C_.Controllers; 
+namespace API_C_.Controllers;
+
 public class PaymentRequest
 {
-    
+
 }
 
 [ApiController]
@@ -19,13 +20,13 @@ public class PaymentsController : ControllerBase
 
     //Post
 
-    [HttpGet(Name = "Payments")]
+    [HttpPost(Name = "Payments")]
 
-    public void GetPayment([FromBody] PaymentRequest data)
+    public ActionResult<string> GetPayment([FromBody] PaymentRequest data)
     {
-        if(!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
         {
-            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Unauthorized("invalid token");
         }
 
         AccountModel user = _sessionLogic.GetUserBySession(sessionKey);
@@ -33,45 +34,45 @@ public class PaymentsController : ControllerBase
         PaymentModel paymentinfo = _paymentAcces.GetPaymentByInitiator(user.username);
 
         Response.StatusCode = (int)HttpStatusCode.OK;
-        return;
+        return Ok(paymentinfo);
     }
 
     [HttpPost("payments/refund")]
 
-    public void GetRefund()
+    public ActionResult<PaymentModel> GetRefund()
     {
-        if(!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
         {
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
 
         AccountModel user = _sessionLogic.GetUserBySession(sessionKey);
 
-        if(user.role == "Admin")
+        if (user.role != "Admin")
         {
-            Response.StatusCode = (int)HttpStatusCode.OK;
-            PaymentModel paymentinfo = _paymentAcces.GetPaymentByInitiator(user.username);
-            return;
+            return Unauthorized("");
         }
-        
+
+        PaymentModel paymentinfo = _paymentAcces.GetPaymentByInitiator(user.username);
+        return Ok(paymentinfo);
     }
-    
+
 
     public void Put()
     {
-        if(!Request.Headers.TryGetValue("Authorization", out var sessionKey))
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionKey))
         {
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
-        
+
     }
 
     public void Get()
     {
-        if(!Request.Headers.TryGetValue("Authorization", out var sessionKey))
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionKey))
         {
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
-        
+
     }
 }
