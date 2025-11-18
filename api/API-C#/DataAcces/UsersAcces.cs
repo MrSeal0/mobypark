@@ -21,7 +21,7 @@ public class UsersAcces : AAcces
     public AccountModel AccountFromUid(int uid)
     {
         string sql = $"SELECT * FROM {Table()} WHERE ID = @Uid ";
-        return _con.QueryFirstOrDefault<AccountModel>(sql, new { Uid = uid});
+        return _con.QueryFirstOrDefault<AccountModel>(sql, new { Uid = uid });
     }
 
     public AccountModel GetByUsername(string username)
@@ -34,5 +34,11 @@ public class UsersAcces : AAcces
     {
         string sql = $"Update {Table()} SET password = @Password WHERE username = @Username";
         _con.Execute(sql, new { Password = password, Username = username });
+    }
+
+    public void UpdatePasswordByID(int uid, string password)
+    {
+        string sql = $"Update {Table()} SET password = @Password WHERE ID = @UID";
+        _con.Execute(sql, new { Password = password, UID = uid });
     }
 }

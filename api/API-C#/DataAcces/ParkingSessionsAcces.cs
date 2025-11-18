@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using API_C_.Controllers;
 using Dapper;
 
@@ -31,7 +32,25 @@ public class ParkingSessionsAcces : AAcces
 
     public void DeleteParkingSession(int sid)
     {
-        string sql = $"UPDATE {Table()} SET deleted_at = @DELETEDAT, isdeleted = 1 WHERE ID = @SID";
+        string sql = $"UPDATE {Table()} SET deleted_at = @DELETEDAT, isdeleted = 1 WHERE ID = @SID AND isdeleted = 0";
         _con.Execute(sql, new { DELETEDAT = DateTime.Now, SID = sid });
+    }
+
+    public List<ParkingSessionModel> GetAllSessionsFromLot(int lid)
+    {
+        string sql = $"SELECT * FROM {Table()} WHERE parking_lot_id = @LID AND isdeleted = 0";
+        return _con.Query<ParkingSessionModel>(sql, new { LID = lid }).ToList();
+    }
+
+    public List<ParkingSessionModel> GetAllUsersSessionsFromLot(int lid, int uid)
+    {
+        string sql = $"SELECT * FROM {Table()} WHERE parking_lot_id = @LID AND user_id = @ID AND isdeleted = 0";
+        return _con.Query<ParkingSessionModel>(sql, new { LID = lid, ID = uid }).ToList();
+    }
+
+    public ParkingSessionModel GetSessionById(int sid)
+    {
+        string sql = $"SELECT * FROM {Table()} WHERE ID = @SID AND isdeleted = 0";
+        return _con.QueryFirstOrDefault<ParkingSessionModel>(sql, new { SID = sid });
     }
 }

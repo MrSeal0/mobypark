@@ -29,4 +29,10 @@ public class ParkingLotsAcces : AAcces
         string sql = $"UPDATE {Table()} SET deleted_at = @DELETEDAT, isdeleted = 1 WHERE ID = @PID";
         _con.Execute(sql, new { DELETEDAT = DateTime.Now, PID = pid });
     }
+
+    public List<ParkingLotModel> GetAllLots()
+    {
+        string sql = $"SELECT * FROM {Table()} WHERE isdeleted = 0";
+        return _con.Query<ParkingLotModel>(sql).ToList();
+    }
 }

@@ -12,7 +12,7 @@ public class ParkinglotsController : ControllerBase
 {
     SessionLogic _sessionlogic = new();
     ParkingLotsessionslogic _parkinglotsessionslogic = new();
-    ParkingLotLogic _acces = new();
+    ParkingLotLogic _logic = new();
 
     [HttpPost(Name = "parking-lots")]
 
@@ -24,7 +24,7 @@ public class ParkinglotsController : ControllerBase
             return "Unauthorized: Invalid or missing session token";
         }
 
-        _acces.CreateParkingLot(data);
+        _logic.CreateParkingLot(data);
         return Ok($"Successfully created lot: {data.name}");
     }
 
@@ -80,7 +80,7 @@ public class ParkinglotsController : ControllerBase
             return Unauthorized("Invalid or missing session token");
         }
 
-        _acces.EditParkingLot(lid, data);
+        _logic.EditParkingLot(lid, data);
         return Ok("Parking lot changed succesfully");
     }
 
@@ -106,7 +106,73 @@ public class ParkinglotsController : ControllerBase
             return Unauthorized("Invalid or missing session token");
         }
 
-        _acces.DeleteParkingLot(lid);
+        _logic.DeleteParkingLot(lid);
         return Ok("Session deleted succesfully");
+    }
+
+
+    [HttpGet]
+    public ActionResult<List<ParkingLotModel>> GetAllParkingLots()
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null)
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Unauthorized("Invalid or missing session token");
+        }
+
+        return _logic.GetAllLots();
+    }
+
+
+    [HttpGet("{lid}/sessions")]
+    public ActionResult<List<ParkingLotModel>> GetAllParkingLots(int lid)
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null)
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Unauthorized("Invalid or missing session token");
+        }
+
+        if (_sessionlogic.GetUserBySession(sessionkey).role != "ADMIN")
+        {
+            return Ok(_parkinglotsessionslogic.GetAllSessionsForLot(lid));
+        }
+
+        return Ok(_parkinglotsessionslogic.GetUserSessionsForLot(lid, _sessionlogic.GetUserBySession(sessionkey).ID));
+    }
+
+
+    [HttpGet("{lid}/sessions/{sid}")]
+
+    public ActionResult<List<ParkingLotModel>> GetSession(int sid)
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null)
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Unauthorized("Invalid or missing session token");
+        }
+
+        if (_sessionlogic.GetUserBySession(sessionkey).role == "ADMIN")
+        {
+            ParkingSessionModel admin_result = _parkinglotsessionslogic.GetSession(sid);
+            if (admin_result == null)
+            {
+                return NotFound("Session could not be found");
+            }
+            else
+            {
+                return Ok(admin_result);
+            }
+        }
+
+        ParkingSessionModel user_result = _parkinglotsessionslogic.GetSessionFromUser(sid, _sessionlogic.GetUserBySession(sessionkey).ID);
+        if (user_result == null)
+        {
+            return NotFound("Session could not be found");
+        }
+        else
+        {
+            return Ok(user_result);
+        }
     }
 }

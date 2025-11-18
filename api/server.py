@@ -659,7 +659,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(b"Invalid session token")
 
 
-        elif self.path.startswith("/parking-lots/"):
+        elif self.path.startswith("/parking-lots"):
             lid = self.path.split("/")[2]
             parking_lots = load_parking_lot_data()
             token = self.headers.get('Authorization')

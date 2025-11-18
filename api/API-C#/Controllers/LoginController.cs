@@ -13,7 +13,7 @@ public class LoginController : ControllerBase
 {
     [HttpPost(Name = "login")]
 
-    public AuthResult Post([FromBody] LoginRequest userinfo)
+    public ActionResult<AuthResult> Post([FromBody] LoginRequest userinfo)
     {
         LoginLogic _logic = new();
 
@@ -21,12 +21,12 @@ public class LoginController : ControllerBase
         if (key is not null)
         {
             Response.StatusCode = (int)HttpStatusCode.OK;
-            return new(true, key);
+            return Ok(new AuthResult(true, key));
         }
         else
         {
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            return new(false);
+            return Unauthorized(new AuthResult(false));
         }
     }
 }

@@ -36,4 +36,24 @@ public class ParkingLotsessionslogic
     {
         _acces.DeleteParkingSession(sid);
     }
+
+    public List<ParkingSessionModel> GetUserSessionsForLot(int lot, int uid)
+    {
+        return _acces.GetAllUsersSessionsFromLot(lot, uid);
+    }
+
+    public List<ParkingSessionModel> GetAllSessionsForLot(int lot)
+    {
+        return _acces.GetAllSessionsFromLot(lot);
+    }
+
+    public ParkingSessionModel GetSession(int sid)
+    {
+        return _acces.GetSessionById(sid);
+    }
+
+    public ParkingSessionModel GetSessionFromUser(int sid, int uid)
+    {
+        return GetSession(sid).user_id == uid ? GetSession(sid) : null;
+    }
 }

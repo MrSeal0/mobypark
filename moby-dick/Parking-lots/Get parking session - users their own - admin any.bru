@@ -1,12 +1,12 @@
 meta {
-  name: Stop parking session
+  name: Get parking session - users their own - admin any
   type: http
-  seq: 7
+  seq: 9
 }
 
-post {
-  url: http://localhost:5030/parking-lots/28/sessions/stop
-  body: json
+get {
+  url: http://localhost:5030/parking-lots/28/sessions/6093475
+  body: none
   auth: inherit
 }
 
@@ -16,7 +16,7 @@ headers {
 
 body:json {
   {
-    "licenseplate" : "XRTT13"
+    "adress": "koekoekstraat 4"
   }
 }
 

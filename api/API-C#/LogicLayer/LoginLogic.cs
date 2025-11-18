@@ -6,7 +6,7 @@ public class LoginLogic
     ArgonHasher hasher = new();
     UsersAcces _acces = new();
     SessionLogic _sessionlogic = new();
-    UsersAcces _userAcces = new();
+
     
     public string Login(LoginRequest userInfo)
     {
@@ -20,7 +20,7 @@ public class LoginLogic
             }
             else if (Encryption.Hash(userInfo.password) == user.password)
             {
-                _userAcces.UpdatePasswordByUsername(userInfo.username, hasher.HashPassword(userInfo.password));
+                _acces.UpdatePasswordByUsername(userInfo.username, hasher.HashPassword(userInfo.password));
                 return _sessionlogic.CreateSession(user.ID);
             }
         }

@@ -26,4 +26,9 @@ public class ParkingLotLogic
     {
         _acces.DeleteParkinglot(lid);
     }
+
+    public List<ParkingLotModel> GetAllLots()
+    {
+        return _acces.GetAllLots();
+    }
 }
