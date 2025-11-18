@@ -12,8 +12,21 @@ public class ParkinglotsController : ControllerBase
 {
     SessionLogic _sessionlogic = new();
     ParkingLotsessionslogic _parkinglotsessionslogic = new();
+    ParkingLotLogic _acces = new();
 
     [HttpPost(Name = "parking-lots")]
+
+    public ActionResult<string> CreateParkingLot([FromBody] CreateLotRequest data)
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null || _sessionlogic.GetUserBySession(sessionkey).role != "ADMIN")
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return "Unauthorized: Invalid or missing session token";
+        }
+
+        _acces.CreateParkingLot(data);
+        return Ok($"Successfully created lot: {data.name}");
+    }
 
     [HttpPost("{lid}/sessions/start")]
     public string StartSession(string lid, [FromBody] ParkingSessionRequest data)
@@ -56,5 +69,44 @@ public class ParkinglotsController : ControllerBase
         Response.StatusCode = (int)HttpStatusCode.OK;
         return $"Session stopped for {data.Licenseplate}";
 
+    }
+
+    [HttpPut("{lid}")]
+    public ActionResult<string> EditParkinglotInfo(int lid, [FromBody] EditLotRequest data)
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null || _sessionlogic.GetUserBySession(sessionkey).role != "ADMIN")
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Unauthorized("Invalid or missing session token");
+        }
+
+        _acces.EditParkingLot(lid, data);
+        return Ok("Parking lot changed succesfully");
+    }
+
+    [HttpDelete("{lid}/sessions/{sid}")]
+    public ActionResult<string> DeleteParkingSession(int lid, int sid)
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null || _sessionlogic.GetUserBySession(sessionkey).role != "ADMIN")
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Unauthorized("Invalid or missing session token");
+        }
+
+        _parkinglotsessionslogic.DeleteParkingSession(sid);
+        return Ok("Session deleted succesfully");
+    }
+
+    [HttpDelete("{lid}")]
+    public ActionResult<string> DeleteParkinglot(int lid)
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionkey) || _sessionlogic.GetUserBySession(sessionkey) == null || _sessionlogic.GetUserBySession(sessionkey).role != "ADMIN")
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            return Unauthorized("Invalid or missing session token");
+        }
+
+        _acces.DeleteParkingLot(lid);
+        return Ok("Session deleted succesfully");
     }
 }

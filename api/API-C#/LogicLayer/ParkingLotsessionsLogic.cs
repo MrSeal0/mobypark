@@ -28,7 +28,12 @@ public class ParkingLotsessionslogic
         current.end_time = DateTime.Now;
         current.duration_minutes = Convert.ToInt32((current.end_time - current.start_time).TotalMinutes);
         ParkingLotModel lotinfo = _lotacces.GetLotById(current.parking_lot_id);
-        current.cost = calculatefee(current.duration_minutes, lotinfo.tarrif, lotinfo.daytarrif);
+        current.cost = calculatefee(current.duration_minutes, lotinfo.tariff, lotinfo.daytariff);
         _acces.EndParkingSession(current);
+    }
+
+    public void DeleteParkingSession(int sid)
+    {
+        _acces.DeleteParkingSession(sid);
     }
 }
