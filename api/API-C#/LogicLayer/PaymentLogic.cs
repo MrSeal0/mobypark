@@ -1,13 +1,23 @@
 public class PaymentLogic
 {
     PaymentAcces _paymentAccess = new();
-    public PaymentModel GetPaymentByInitiator(string username)
+    RefundAcces _refundAccess = new();
+    public List<PaymentModel> GetPaymentsByInitiator(string username)
     {
-        return _paymentAccess.GetPaymentByInitiator(username);
+        return _paymentAccess.GetPaymentsByInitiator(username);
     }
 
-    public void CompletePayment(string username)
+    public void CreateNewPayment(PaymentRequest paymentData)
     {
-        _paymentAccess.CompletePayment(username);
+        _paymentAccess.CreateNewPayment(paymentData);
+    }
+
+    public void CreateNewRefund(RefundRequest refundData)
+    {
+        _refundAccess.CreateNewRefund(refundData);
+    }
+    public void CompletePayment(int pid)
+    {
+        _paymentAccess.CompletePayment(pid);
     }
 }

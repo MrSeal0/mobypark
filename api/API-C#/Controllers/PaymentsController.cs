@@ -5,13 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_C_.Controllers;
 
-public class PaymentRequest
-{
-
-}
-
 [ApiController]
 [Route("[controller]")]
+
 
 public class PaymentsController : ControllerBase
 {
@@ -20,9 +16,10 @@ public class PaymentsController : ControllerBase
 
     //Post
 
+
     [HttpPost(Name = "Payments")]
 
-    public ActionResult<PaymentModel> PostPayment()
+    public ActionResult<string> PostPayment([FromBody] PaymentRequest paymentData)
     {
         if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
         {
@@ -31,18 +28,54 @@ public class PaymentsController : ControllerBase
 
         AccountModel user = _sessionLogic.GetUserBySession(sessionKey);
 
-        PaymentModel paymentinfo = _paymentLogic.GetPaymentByInitiator(user.username);
+        paymentData.initiator = user.username;
 
-        return Ok(paymentinfo);
+        _paymentLogic.CreateNewPayment(paymentData);
+        return Ok("payment created");
     }
 
     [HttpPost("payments/refund")]
 
-    public ActionResult<PaymentModel> PostRefund()
+    public ActionResult<string> PostRefund([FromBody] RefundRequest refundData)
     {
         if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
         {
             return Unauthorized();
+        }
+
+        AccountModel admin = _sessionLogic.GetUserBySession(sessionKey);
+
+        if (admin.role != "Admin")
+        {
+            return Unauthorized();
+        }
+
+        refundData.Processed_By = admin.username;
+
+        _paymentLogic.CreateNewRefund(refundData);
+        return Ok("refunded succesfully");
+    }
+
+    //put
+    [HttpPut("{pid}")]
+    public ActionResult<string> PutPayment(int pid)
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
+        {
+            return Unauthorized("no authorization");
+        }
+        
+        _paymentLogic.CompletePayment(pid);
+        return Ok("Payment succesful");
+
+    }
+
+    [HttpGet("{username}")]
+    public ActionResult<PaymentModel> GetUserPayments(string username)
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
 
         AccountModel user = _sessionLogic.GetUserBySession(sessionKey);
@@ -51,31 +84,25 @@ public class PaymentsController : ControllerBase
         {
             return Unauthorized();
         }
+        if (username == null || username == "")
+        {
+            return Unauthorized();
+        }
 
-        PaymentModel paymentinfo = _paymentLogic.GetPaymentByInitiator(user.username);
+        List<PaymentModel> paymentinfo = _paymentLogic.GetPaymentsByInitiator(username);
+
         return Ok(paymentinfo);
     }
 
-
-    public ActionResult<string> PutPayment([FromBody] PaymentRequest data)
+    public ActionResult<List<PaymentModel>> GetAllPayments()
     {
         if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
         {
-            return Unauthorized("no authorization");
-        }
-        
-        
-
-        return Ok("Payment succesful");
-
-    }
-
-    public void GetPayment()
-    {
-        if (!Request.Headers.TryGetValue("Authorization", out var sessionKey))
-        {
             Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
+        AccountModel user = _sessionLogic.GetUserBySession(sessionKey);
+        List<PaymentModel> paymentinfo = _paymentLogic.GetPaymentsByInitiator(user.username);
+        return Ok(paymentinfo);
 
     }
 }
