@@ -1,0 +1,26 @@
+meta {
+  name: Change car nickname
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:5030/vehicles/14210
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: E1-BA-B0-81-19-01-78-39-D8-16-8D-04-17-4A-12-55-D9-B5-FE-27-B8-56-3D-8D-88-39-B2-6C-5D-B1-C8-A9
+}
+
+body:json {
+  {
+    "name" : "zieke bmw"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

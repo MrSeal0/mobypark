@@ -1,0 +1,24 @@
+meta {
+  name: Delete parking session (admin only)
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:5030/parking-lots/28/sessions/6093494
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: 63-88-AB-BF-5C-CF-FA-55-E9-06-AB-7A-07-CD-CC-C3-44-2E-DA-D4-DF-33-CF-49-01-27-EB-02-2C-51-05-37
+}
+
+body:json {
+  \
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

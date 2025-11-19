@@ -1,0 +1,27 @@
+meta {
+  name: FinishPayment
+  type: http
+  seq: 2
+}
+
+put {
+  url: http://localhost:5030/payments/5787791
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: CD-3F-D5-8A-39-7E-98-94-61-4F-84-8B-1E-DF-C7-E7-40-29-12-46-05-ED-B2-E5-43-F8-18-1D-85-B0-D8-FB
+}
+
+body:json {
+  {
+    "Method" : "IDEAL",
+    "Bank" : "ING"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

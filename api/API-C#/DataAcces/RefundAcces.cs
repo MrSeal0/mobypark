@@ -3,11 +3,17 @@ using Dapper;
 
 public class RefundAcces : AAcces
 {
-    public override string Table() => "Refunds";
+    public override string Table() => "refunds";
 
     public void CreateNewRefund(RefundRequest refundData)
     {
-        string sql = $"INSERT INTO {Table()} VALUES Amount = @Amount, Coupled_To = @Coupled, Processed_By = @Processor, Hash = @hash";
-        _con.Execute(sql, new { Amount = refundData.Amount,  Coupled = refundData.Coupled_To, Processor = refundData.Processed_By, Hash = refundData.Hash});
+        string sql = $"INSERT INTO {Table()} (amount, coupled_to, processed_by, hash) VALUES (@amount, @coupled_to, @processed_by, @hash)";
+        _con.Execute(sql, new { amount = refundData.Amount,  coupled_to = refundData.Coupled_To, processed_by = refundData.Processed_By, hash = refundData.Hash});
+    }
+
+    public void RefundPayment(int pid, RefundRequest RR)
+    {
+        string sql = $"INSERT INTO {Table()} (paymentID, amount, coupled_to, processed_by, hash) VALUES (@paymentID, @amount, @coupled_to, @processed_by, @hash)";
+        _con.Execute(sql, new { paymentID = pid ,amount = RR.Amount,  coupled_to = RR.Coupled_To, processed_by = RR.Processed_By, hash = RR.Hash});
     }
 }

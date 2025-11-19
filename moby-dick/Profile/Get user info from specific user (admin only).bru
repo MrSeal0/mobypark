@@ -1,0 +1,27 @@
+meta {
+  name: Get user info from specific user (admin only)
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:5030/profile/232
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: E7-BB-16-89-FE-60-80-1A-96-84-1F-E0-91-0E-B6-7E-B8-D7-3A-25-23-59-76-6E-08-97-76-30-1F-2E-B9-BF
+}
+
+body:json {
+  {
+    "password": "test2",
+    "new_password": "test"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
