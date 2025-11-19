@@ -23,4 +23,6 @@ public class HashingTest
         string hashedPassword = hasher.HashPassword(password);
         Assert.IsTrue(hasher.VerifyPassword(password, hashedPassword));
     }
+
+    
 }

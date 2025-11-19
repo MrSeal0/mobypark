@@ -1,0 +1,20 @@
+meta {
+  name: CreateRefundByID
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:5030/payments/refund/5787791
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: 3C-3F-4F-66-1F-58-A5-4A-7C-98-45-D9-48-C1-07-0A-E1-8D-6F-E8-41-B7-A5-A3-03-1C-9B-12-10-8F-5F-33
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
