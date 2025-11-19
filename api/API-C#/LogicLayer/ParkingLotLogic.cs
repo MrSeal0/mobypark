@@ -31,4 +31,15 @@ public class ParkingLotLogic
     {
         return _acces.GetAllLots();
     }
+
+    public bool DoesLotExist(int id)
+    {
+        ParkingLotModel result = _acces.DoesLotExist(id);
+        return result == null ? false : true;
+    }
+
+    public ParkingLotModel GetLotByID(int id)
+    {
+        return _acces.GetLotById(id);
+    }
 }

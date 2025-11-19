@@ -1,0 +1,29 @@
+meta {
+  name: Get Reservation (if own or admin)
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:5030/Reservations/2000
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: 3A-E4-88-4E-AB-FB-48-78-22-CD-16-BF-67-BC-AA-D9-B0-11-C7-B2-7F-A9-7B-9E-40-E7-83-C2-2D-BB-60-DD
+}
+
+body:json {
+  {
+    "vehicle_id" : 14211,
+    "startdate" : "2025-07-14T12:51:56Z",
+    "enddate" : "2025-07-14T12:51:56Z",
+    "parkinglot" : 4
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

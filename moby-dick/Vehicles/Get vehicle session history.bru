@@ -1,0 +1,20 @@
+meta {
+  name: Get vehicle session history
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:5030/vehicles/14211/history
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: 60-57-44-C1-C3-33-A8-A6-3F-DC-64-FB-32-2B-EA-3D-88-53-11-E7-18-F7-88-00-2A-29-61-BA-EC-68-A4-B2
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

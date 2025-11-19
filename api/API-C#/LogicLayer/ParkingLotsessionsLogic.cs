@@ -2,6 +2,7 @@ public class ParkingLotsessionslogic
 {
     ParkingSessionsAcces _acces = new();
     ParkingLotsAcces _lotacces = new();
+    VehicleLogic _vlogic = new();
     public bool IsParked(string licenseplate)
     {
         bool isparked = _acces.IsParked(licenseplate);
@@ -55,5 +56,10 @@ public class ParkingLotsessionslogic
     public ParkingSessionModel GetSessionFromUser(int sid, int uid)
     {
         return GetSession(sid).user_id == uid ? GetSession(sid) : null;
+    }
+
+    public List<ParkingSessionModel> GetVehicleSessionsHistory(int vid)
+    {
+        return _acces.GetVehicleSessionsHistory(_vlogic.GetVehicleByID(vid).license_plate);
     }
 }

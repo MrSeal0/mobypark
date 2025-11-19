@@ -53,4 +53,10 @@ public class ParkingSessionsAcces : AAcces
         string sql = $"SELECT * FROM {Table()} WHERE ID = @SID AND isdeleted = 0";
         return _con.QueryFirstOrDefault<ParkingSessionModel>(sql, new { SID = sid });
     }
+
+    public List<ParkingSessionModel> GetVehicleSessionsHistory(string plate)
+    {
+        string sql = $"SELECT * FROM {Table()} WHERE license_plate = @PLATE and isdeleted = 0";
+        return _con.Query<ParkingSessionModel>(sql, new { PLATE = plate }).ToList();
+    }
 }

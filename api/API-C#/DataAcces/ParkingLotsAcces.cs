@@ -35,4 +35,10 @@ public class ParkingLotsAcces : AAcces
         string sql = $"SELECT * FROM {Table()} WHERE isdeleted = 0";
         return _con.Query<ParkingLotModel>(sql).ToList();
     }
+
+    public ParkingLotModel DoesLotExist(int pid)
+    {
+        string sql = $"SELECT * FROM {Table()} WHERE ID = @PID AND isdeleted = 0";
+        return _con.QueryFirstOrDefault<ParkingLotModel>(sql, new { PID = pid });
+    }
 }
