@@ -6,9 +6,9 @@ public abstract class AAcces
 
     public abstract string Table();
 
-    public AAcces()
+    public AAcces(string connectionstring = "Data Source=DataSources/DataBase.db")
     {
-        _con = new SqliteConnection($"Data Source=DataSources/DataBase.db");
+        _con = new SqliteConnection(connectionstring);
         _con.Open();
 
         using (var command = _con.CreateCommand())
