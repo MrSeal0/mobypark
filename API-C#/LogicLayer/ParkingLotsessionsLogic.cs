@@ -1,8 +1,15 @@
 public class ParkingLotsessionslogic
 {
-    ParkingSessionsAcces _acces = new();
-    ParkingLotsAcces _lotacces = new();
-    VehicleLogic _vlogic = new();
+    IParkingSessionAcces _acces;
+    IParkingLotsAcces _lotacces;
+    IVehicleLogic _vlogic;
+
+    public ParkingLotsessionslogic(IParkingSessionAcces parkingsessionsacces = null, IParkingLotsAcces parkinglotsacces = null, IVehicleLogic vehiclelogic = null)
+    {
+        _acces = parkingsessionsacces ?? new ParkingSessionsAcces();
+        _lotacces = parkinglotsacces ?? new ParkingLotsAcces();
+        _vlogic = vehiclelogic ?? new VehicleLogic();
+    }
     public bool IsParked(string licenseplate)
     {
         bool isparked = _acces.IsParked(licenseplate);
@@ -14,13 +21,15 @@ public class ParkingLotsessionslogic
         _acces.StartParkSession(licenseplate, uid, plid);
     }
 
-    public double calculatefee(int TotalMinutes, double price, double dayprice)
+    public double calculatefee(int TotalMinutes, double pricePerHour, double pricePerDay)
     {
-        double hours = (double)TotalMinutes / 60;
-        int days = Convert.ToInt32(hours / 24);
-        hours = hours - (days * 24);
-        double totalfee = ((double)days * dayprice) + (hours * price);
-        return totalfee;
+        double totalHours = TotalMinutes / 60.0;
+        int fullDays = (int)(totalHours / 24);
+
+        double remainingHours = totalHours - fullDays * 24;
+
+        double totalCost =  Math.Round(fullDays * pricePerDay + remainingHours * pricePerHour, 2, MidpointRounding.ToEven);
+        return totalCost;
     }
 
     public void StopParkingSession(string licenseplate)

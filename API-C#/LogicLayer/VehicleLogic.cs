@@ -4,18 +4,20 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-public class RDWRequest()
+public interface IVehicleLogic
 {
-    public string license_plate { get; set; }
-    public string make { get; set; }
-
-    public string model { get; set; }
-
-    public string color { get; set; }
-    public string year { get; set; }
+    
+    public bool IsVehicleRegisterd(string plate);
+    public bool DoesUserOwnCar(string token, string plate);
+    public bool DoesUserOwnCar(string token, int id);
+    public Task<bool> CreateVehicle(string plate, string token);
+    public VehicleModel GetVehicleByPlate(string plate);
+    public VehicleModel GetVehicleByID(int id);
+    public void ChangeCarNickname(int id, string name);
+    public void DeleteCar(int id);
 }
 
-public class VehicleLogic
+public class VehicleLogic : IVehicleLogic
 {
     VehicleAcces _acces = new();
     SessionAcces _sessionacces = new();
