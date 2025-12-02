@@ -1,15 +1,16 @@
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
 
-COPY *.csproj ./
-RUN dotnet restore
+COPY ["API-C#/API-C#.csproj", "API-C#/"]
+RUN dotnet restore "API-C#/API-C#.csproj"
 
-COPY . ./
-RUN dotnet publish -c Release -o out
+COPY . .
+WORKDIR "/src/API-C#"
+RUN dotnet publish "API-C#.csproj" -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-COPY --from=base /app/out .
+COPY --from=build /app/publish .
 
 EXPOSE 5000
-ENTRYPOINT ["dotnet", "YourApp.dll"]
+ENTRYPOINT ["dotnet", "API-C#.dll"]
