@@ -2,7 +2,20 @@ using System.Collections.Specialized;
 using API_C_.Controllers;
 using Dapper;
 
-public class ParkingSessionsAcces : AAcces
+public interface IParkingSessionAcces
+{
+    public bool IsParked(string licenseplate);
+    public void StartParkSession(string licenseplate, int uid, int plid);
+    public ParkingSessionModel GetCurrentSession(string licenseplate);
+    public void EndParkingSession(ParkingSessionModel info);
+    public void DeleteParkingSession(int sid);
+    public List<ParkingSessionModel> GetAllSessionsFromLot(int lid);
+    public List<ParkingSessionModel> GetAllUsersSessionsFromLot(int lid, int uid);
+    public ParkingSessionModel GetSessionById(int sid);
+    public List<ParkingSessionModel> GetVehicleSessionsHistory(string plate);
+}
+
+public class ParkingSessionsAcces : AAcces, IParkingSessionAcces
 {
     public override string Table() => "parking_Sessions";
 

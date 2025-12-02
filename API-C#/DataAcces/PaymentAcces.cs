@@ -2,7 +2,18 @@ using System.Transactions;
 using API_C_.Controllers;
 using Dapper;
 
-public class PaymentAcces : AAcces
+public interface IPaymentAcces
+{
+    public PaymentModel GetPaymentById(int id);
+    public List<PaymentModel> GetPaymentsByInitiator(string initiator);
+    public void CreateNewPayment(PaymentRequest paymentData);
+    public void CompletePayment(int pid);
+    public PaymentModel GetInfoForTData(int id);
+    public void CompleteTData(int pid, TDataRequest tdata);
+    public PaymentModel GetPaymentByID(int pid);
+}
+
+public class PaymentAcces : AAcces, IPaymentAcces
 {
     public override string Table() => "Payments";
 

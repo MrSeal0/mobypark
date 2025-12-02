@@ -4,7 +4,17 @@ using API_C_.Controllers;
 using Dapper;
 using SQLitePCL;
 
-public class VehicleAcces : AAcces
+public interface IVehicleAcces
+{
+    public VehicleModel GetVehicleByLicenseplate(string licenseplate);
+    public VehicleModel GetVehicleByID(int id);
+    public void CreateVehicle(RdwAuto data, int user_id);
+    public string GetLicensePlateByID(int id);
+    public void ChangeCarName(int id, string name);
+    public void DeletedCar(int id);
+}
+
+public class VehicleAcces : AAcces, IVehicleAcces
 {
 
     public override string Table() => "Vehicles";

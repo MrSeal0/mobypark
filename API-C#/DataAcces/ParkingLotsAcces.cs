@@ -2,7 +2,17 @@ using API_C_.Controllers;
 using Dapper;
 using SQLitePCL;
 
-public class ParkingLotsAcces : AAcces
+public interface IParkingLotsAcces
+{
+    public ParkingLotModel GetLotById(int id);
+    public void CreateParkingLot(CreateLotRequest data);
+    public void EditParkingLot(int lid, EditLotRequest data);
+    public void DeleteParkinglot(int pid);
+    public List<ParkingLotModel> GetAllLots();
+    public ParkingLotModel DoesLotExist(int pid);
+}
+
+public class ParkingLotsAcces : AAcces, IParkingLotsAcces
 {
     public override string Table() => "parkinglots";
 

@@ -4,8 +4,14 @@ using API_C_.Controllers;
 public class LoginLogic
 {
     ArgonHasher hasher = new();
-    UsersAcces _acces = new();
-    SessionLogic _sessionlogic = new();
+    IUsersAcces _acces;
+    ISessionLogic _sessionlogic;
+
+    public LoginLogic(IUsersAcces useracces = null, ISessionLogic sessionlogic = null)
+    {
+        _acces = useracces ?? new UsersAcces();
+        _sessionlogic = sessionlogic ?? new SessionLogic();
+    }
 
     
     public string Login(LoginRequest userInfo)

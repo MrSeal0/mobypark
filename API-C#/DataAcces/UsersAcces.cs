@@ -2,7 +2,17 @@ using API_C_.Controllers;
 using Dapper;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-public class UsersAcces : AAcces
+public interface IUsersAcces
+{
+    public bool IsTaken(string username);
+    public void InsertAccount(RegisterRequest info);
+    public AccountModel AccountFromUid(int uid);
+    public AccountModel GetByUsername(string username);
+    public void UpdatePasswordByUsername(string username, string password);
+    public void UpdatePasswordByID(int uid, string password);
+}
+
+public class UsersAcces : AAcces, IUsersAcces
 {
     public override string Table() => "users";
 

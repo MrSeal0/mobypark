@@ -2,7 +2,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Dapper;
 using SQLitePCL;
 
-public class ReservationsAcces : AAcces
+public interface IReservationsAcces
+{
+    public void CreateReservation(ReservationRequest data, int uid, double cost);
+    public ReservationModel GetReservationByID(int id);
+    public void EditReservation(EditReservationRequest data, int rid);
+    public void DeleteReservation(int rid);
+    public List<ReservationModel> GetVehicleReservations(int vid);
+}
+
+public class ReservationsAcces : AAcces, IReservationsAcces
 {
     public override string Table() => "reservations";
 

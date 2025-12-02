@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 public static class Encryption
@@ -19,5 +20,12 @@ public static class Encryption
             sb.Append(hashedBytes[i].ToString("x2"));
         }
         return sb.ToString();
+    }
+
+    public static bool Verify(string plaintext, string hash)
+    {
+        string hashes = Hash(plaintext);
+
+        return hashes == hash;
     }
 }

@@ -1,7 +1,13 @@
 using API_C_.Controllers;
 using Dapper;
 
-public class RefundAcces : AAcces
+public interface IRefundAcces
+{
+    public void CreateNewRefund(RefundRequest refundData);
+    public void RefundPayment(int pid, RefundRequest RR);
+}
+
+public class RefundAcces : AAcces, IRefundAcces
 {
     public override string Table() => "refunds";
 

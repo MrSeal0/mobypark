@@ -1,6 +1,13 @@
 using System.Security.Cryptography;
 
-public class SessionLogic
+public interface ISessionLogic
+{
+    public string CreateSession(int uid);
+    public void EndSession(string sessionkey);
+    public AccountModel GetUserBySession(string session);
+}
+
+public class SessionLogic : ISessionLogic
 {
     SessionAcces _acces = new();
     UsersAcces _useracces = new();

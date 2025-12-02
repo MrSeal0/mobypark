@@ -2,7 +2,14 @@ using System.Security.Cryptography;
 using System.Text;
 using Konscious.Security.Cryptography;
 
-public class ArgonHasher
+public interface IArgonHasher
+{
+    
+    public string HashPassword(string password);
+    public bool VerifyPassword(string password, string hashedPassword);
+}
+
+public class ArgonHasher : IArgonHasher
 {
     private const int SaltSize = 16; // 128 bits
     private const int HashSize = 32; // 256 bits

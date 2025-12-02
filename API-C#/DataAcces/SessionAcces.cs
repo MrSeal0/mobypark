@@ -1,7 +1,13 @@
 using API_C_.Controllers;
 using Dapper;
+public interface ISessionAcces
+{
+    public void AddSession(string session, int uid);
+    public void RemoveSession(string session);
+    public int UidFromSession(string session);
+}
 
-public class SessionAcces : AAcces
+public class SessionAcces : AAcces, ISessionAcces
 {
     public override string Table() => "sessions";
 
