@@ -5,24 +5,35 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations.Schema;
 using API_C_.Controllers;
+using System.Xml.Serialization;
+using Microsoft.AspNetCore.Mvc;
+
+
 
 namespace testing;
 [TestClass]
-public class PaymentTest : TestAcces
+public class PaymentTest
 {
-    public override string Table() => "Payments";
+    PaymentLogic _paymentLogic = new();
 
     [TestMethod]
     [DataRow("JorisTest", 10)]
     [DataRow("OokJoris", 12)]
     public void PaymentGetTest(string user, int am)
     {
-        string sql = $"INSERT INTO {Table()} (amount, created_at, hash, initiator, \"transaction\") VALUES (@amount, @created_at, @hash, @initiator, @transaction)";
-        _con.Execute(sql, new {amount = am, created_at = DateTime.Now, hash = "idk", initiator = user, transaction = "abc123"});
+        PaymentRequest PReq = new()
+        {
+            Transaction = "blabla",
+            Amount = am,
+            Initiator = user
+        };
 
-        string sql2 = $"SELECT amount FROM {Table()} WHERE initiator = @Initiator";
-        int newAmount = _con.Execute(sql2, new { Initiator = user });
+        _paymentLogic.CreateNewPayment(PReq);
 
-        Assert.IsTrue(newAmount == am);
+        ActionResult<List<PaymentModel>> payments = _paymentLogic.GetPaymentsByInitiator(user);
+        Assert.IsTrue(payments.Result is OkObjectResult);
+
+        PaymentModel lastpayment = payments.Value[-1];
+        Assert.IsTrue(lastpayment.Amount == am && lastpayment.Transaction == "blabla");
     }
 }

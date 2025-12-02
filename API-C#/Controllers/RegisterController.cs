@@ -17,21 +17,20 @@ public class RegisterController : ControllerBase
     [HttpPost(Name = "register")]
 
 
-    public string Post([FromBody] RegisterRequest userinfo)
+    public ActionResult<string> RegisterPost([FromBody] RegisterRequest userinfo)
     {
         userinfo.password = hasher.HashPassword(userinfo.password);
         RegisterLogic logic = new();
         HttpStatusCode result = logic.CreateAccount(userinfo);
-        Response.StatusCode = (int)result;
 
 
         if (result == HttpStatusCode.Conflict)
         {
-            return $"Username \"{userinfo.username}\" is already in use";
+            return Unauthorized($"Username \"{userinfo.username}\" is already in use");
         }
         else
         {
-            return "Account created succesfully!";
+            return Ok("Account created succesfully!");
         }
     }
 

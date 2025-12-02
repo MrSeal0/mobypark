@@ -5,7 +5,7 @@ public abstract class TestAcces
 
     public abstract string Table();
 
-    public TestAcces(string connectionstring = "Data Source=DataSources/TestDataBase.db")
+    public TestAcces(string connectionstring = "Data Source=../../../../DataSources/TestDataBase.db")
     {
         _con = new SqliteConnection(connectionstring);
         _con.Open();

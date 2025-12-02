@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.Data.Sqlite;
 
 public abstract class AAcces
@@ -6,9 +7,10 @@ public abstract class AAcces
 
     public abstract string Table();
 
-    public AAcces(string connectionstring = "Data Source=DataSources/DataBase.db")
+    public AAcces()
     {
-        _con = new SqliteConnection(connectionstring);
+        Debug.WriteLine(System.Environment.GetEnvironmentVariable("TEST_DB"));
+        _con = new SqliteConnection(System.Environment.GetEnvironmentVariable("TEST_DB") ?? "Data Source=../../../../DataSources/DataBase.db");
         _con.Open();
 
         using (var command = _con.CreateCommand())

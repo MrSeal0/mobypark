@@ -104,7 +104,7 @@ public class PaymentsController : ControllerBase
     }
 
     [HttpGet("{username}")]
-    public ActionResult<PaymentModel> GetUserPayments(string username)
+    public ActionResult<List<PaymentModel>> GetUserPayments(string username)
     {
         if (!Request.Headers.TryGetValue("Authorization", out var sessionKey) || _sessionLogic.GetUserBySession(sessionKey) == null)
         {
