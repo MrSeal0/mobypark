@@ -1,6 +1,21 @@
-public class ParkingLotLogic
+public interface IParkingLotLogic
 {
-    ParkingLotsAcces _acces = new();
+    public void CreateParkingLot(CreateLotRequest data);
+    public void EditParkingLot(int lid, EditLotRequest data);
+    public void DeleteParkingLot(int lid);
+    public List<ParkingLotModel> GetAllLots();
+    public bool DoesLotExist(int id);
+    public ParkingLotModel GetLotByID(int id);
+}
+
+public class ParkingLotLogic : IParkingLotLogic
+{
+    IParkingLotsAcces _acces;
+
+    public ParkingLotLogic(IParkingLotsAcces parkinglotacces = null)
+    {
+        _acces = parkinglotacces ?? new ParkingLotsAcces();
+    }
 
     public void CreateParkingLot(CreateLotRequest data)
     {

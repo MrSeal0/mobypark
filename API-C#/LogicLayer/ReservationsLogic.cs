@@ -1,8 +1,15 @@
 public class ReservationsLogic
 {
-    ReservationsAcces _acces = new();
-    ParkingLotsessionslogic _psessionlogic = new();
-    ParkingLotLogic _plotlogic = new();
+    IReservationsAcces _acces;
+    IParkingLotsessionslogic _psessionlogic;
+    IParkingLotLogic _plotlogic;
+
+    public ReservationsLogic(IReservationsAcces reservationacces = null, IParkingLotsessionslogic parkinglotssessionlogic = null, IParkingLotLogic parkinglotlogic = null)
+    {
+        _acces = reservationacces ?? new ReservationsAcces();
+        _psessionlogic = parkinglotssessionlogic ?? new ParkingLotsessionslogic();
+        _plotlogic = parkinglotlogic ?? new ParkingLotLogic();
+    }
     public void CreateReservation(ReservationRequest data, int uid)
     {
         ParkingLotModel targetlot = _plotlogic.GetLotByID(data.parkinglot);

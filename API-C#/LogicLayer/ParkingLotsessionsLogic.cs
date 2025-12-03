@@ -1,4 +1,18 @@
-public class ParkingLotsessionslogic
+public interface IParkingLotsessionslogic
+{
+    public bool IsParked(string licenseplate);
+    public void StartParkSession(string licenseplate, int uid, int plid);
+    public double calculatefee(int TotalMinutes, double pricePerHour, double pricePerDay);
+    public void StopParkingSession(string licenseplate);
+    public void DeleteParkingSession(int sid);
+    public List<ParkingSessionModel> GetUserSessionsForLot(int lot, int uid);
+    public List<ParkingSessionModel> GetAllSessionsForLot(int lot);
+    public ParkingSessionModel GetSession(int sid);
+    public ParkingSessionModel GetSessionFromUser(int sid, int uid);
+    public List<ParkingSessionModel> GetVehicleSessionsHistory(int vid);
+}
+
+public class ParkingLotsessionslogic : IParkingLotsessionslogic
 {
     IParkingSessionAcces _acces;
     IParkingLotsAcces _lotacces;
