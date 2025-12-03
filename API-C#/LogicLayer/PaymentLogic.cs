@@ -1,4 +1,10 @@
-public class PaymentLogic
+public interface IPaymentLogic
+{
+    public List<PaymentModel> GetPaymentsByInitiator(string username);
+    public void CreateNewPayment(PaymentRequest paymentData);
+}
+
+public class PaymentLogic : IPaymentLogic
 {
     PaymentAcces _paymentAccess = new();
     RefundAcces _refundAccess = new();
