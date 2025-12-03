@@ -21,7 +21,7 @@ public class PaymentTest
             Amount = am,
             Initiator = user
         };
-
+        
         paymentLogicMock.Setup(p => p.CreateNewPayment(It.IsAny<PaymentRequest>())).Verifiable();
 
         var list = new List<PaymentModel>
