@@ -1,7 +1,20 @@
-public class PaymentLogic
+public interface IPaymentLogic
 {
-    PaymentAcces _paymentAccess = new();
-    RefundAcces _refundAccess = new();
+    public List<PaymentModel> GetPaymentsByInitiator(string username);
+    public void CreateNewPayment(PaymentRequest paymentData);
+}
+
+public class PaymentLogic : IPaymentLogic
+{
+    // je moet constructors in je logic zetten zodat je de juiste dependencies kan injecten omdat je die nooit aanroept, dus de mock classes die je in je test hebt gemaakt worden nooit gebruikt
+    IPaymentAcces _paymentAccess;
+    IRefundAcces _refundAccess;
+    public PaymentLogic(IPaymentAcces paymentacces = null, IRefundAcces refundacces = null)
+    {
+        _paymentAccess = paymentacces ?? new PaymentAcces();
+        _refundAccess = refundacces ?? new RefundAcces();
+    }
+
     public List<PaymentModel> GetPaymentsByInitiator(string username)
     {
         return _paymentAccess.GetPaymentsByInitiator(username);

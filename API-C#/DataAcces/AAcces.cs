@@ -9,7 +9,7 @@ public abstract class AAcces
 
     public AAcces()
     {
-        _con = new SqliteConnection("Data Source= DataSources/DataBase.db");
+        _con = new SqliteConnection("Data Source=DataSources/DataBase.db");
         _con.Open();
 
         using (var command = _con.CreateCommand())
