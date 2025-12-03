@@ -9,8 +9,7 @@ public abstract class AAcces
 
     public AAcces()
     {
-        Debug.WriteLine(System.Environment.GetEnvironmentVariable("TEST_DB"));
-        _con = new SqliteConnection(System.Environment.GetEnvironmentVariable("TEST_DB") ?? "Data Source=../../../../DataSources/DataBase.db");
+        _con = new SqliteConnection("Data Source= DataSources/DataBase.db");
         _con.Open();
 
         using (var command = _con.CreateCommand())
