@@ -18,7 +18,18 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Build and publish
-        run: dotnet publish -c Release -o publish
+        run: |
+          dotnet publish -c Release -o publish
+
+      - name: Check SSH port 22
+        run: |
+          HOST=${{ secrets.SERVER_HOST }}
+          if timeout 8 bash -c ">/dev/tcp/$HOST/22"; then
+            echo "SSH port 22 open on $HOST"
+          else
+            echo "SSH port 22 closed/unreachable on $HOST"
+            exit 2
+          fi
 
       - name: Copy files to server
         uses: appleboy/scp-action@v1
