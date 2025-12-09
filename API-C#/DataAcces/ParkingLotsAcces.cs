@@ -10,6 +10,7 @@ public interface IParkingLotsAcces
     public void DeleteParkinglot(int pid);
     public List<ParkingLotModel> GetAllLots();
     public ParkingLotModel DoesLotExist(int pid);
+    public ParkingLotModel GetLatestLot();
 }
 
 public class ParkingLotsAcces : AAcces, IParkingLotsAcces
@@ -50,5 +51,11 @@ public class ParkingLotsAcces : AAcces, IParkingLotsAcces
     {
         string sql = $"SELECT * FROM {Table()} WHERE ID = @PID AND isdeleted = 0";
         return _con.QueryFirstOrDefault<ParkingLotModel>(sql, new { PID = pid });
+    }
+
+    public ParkingLotModel GetLatestLot()
+    {
+        string sql = $"SELECT * FROM {Table()} WHERE isdeleted = 0 ORDER BY ID DESC LIMIT 1";
+        return _con.QueryFirstOrDefault<ParkingLotModel>(sql);
     }
 }
