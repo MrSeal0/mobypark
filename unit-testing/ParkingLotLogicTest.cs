@@ -172,7 +172,7 @@ public class ParkingLotLogicTest
     {
         var access = new Mock<IParkingLotsAcces>();
 
-        access.Setup(a => a.DoesLotExist(lid)).Returns(lid == 1 ?new ParkingLotModel { ID = lid, name = "LotA"} : null);
+        access.Setup(a => a.DoesLotExist(lid)).Returns(lid == 1 ? new ParkingLotModel { ID = lid, name = "LotA"} : null);
 
         var logic = new ParkingLotLogic(access.Object);
 
@@ -181,4 +181,38 @@ public class ParkingLotLogicTest
         Assert.Equal(exists, result);
     }
 
+    [Fact]
+
+    public void GetLotByIDTest()
+    {
+        var access = new Mock<IParkingLotsAcces>();
+
+        var fakelot = new ParkingLotModel
+        {
+            ID = 1,
+            name = "ParkingLotA",
+            location = "Rotterdam",
+            adress = "Wijnhaven 4",
+            capacity = 100,
+            tariff = 4,
+            daytariff = 50,
+            coordinates = "1,1"
+        };
+
+        access.Setup(a => a.GetLotById(1)).Returns(fakelot);
+
+        var logic = new ParkingLotLogic(access.Object);
+
+        var result = logic.GetLotByID(1);
+
+        Assert.NotNull(result);
+        Assert.Equal(fakelot.ID, result.ID);
+        Assert.Equal(fakelot.name, result.name);
+        Assert.Equal(fakelot.location, result.location);
+        Assert.Equal(fakelot.adress, result.adress);
+        Assert.Equal(fakelot.capacity, result.capacity);
+        Assert.Equal(fakelot.tariff, result.tariff);
+        Assert.Equal(fakelot.daytariff, result.daytariff);
+        Assert.Equal(fakelot.coordinates, result.coordinates);
+    }
 }
