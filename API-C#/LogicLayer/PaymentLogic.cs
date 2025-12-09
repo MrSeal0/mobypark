@@ -41,16 +41,21 @@ public class PaymentLogic : IPaymentLogic
     }
 
 
-    public void RefundPayment(int pid, AccountModel admin)
+    public void RefundPayment(int pid, string username)
     {
         PaymentModel pmodel = _paymentAccess.GetPaymentById(pid);
         RefundRequest RR = new()
         {
             Amount = pmodel.Amount,
             Coupled_To = pmodel.Initiator,
-            Processed_By = admin.username
+            Processed_By = username
         };
         _refundAccess.RefundPayment(pid, RR);
 
+    }
+
+    public int GetRefundById(int id)
+    {
+       return _refundAccess.GetRefund(id); 
     }
 }

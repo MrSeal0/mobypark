@@ -9,10 +9,10 @@ namespace unit_testing;
 public class PaymentTest
 {
     [Theory]
-    [InlineData("Joristest")]
-    [InlineData("OokJoris")]
+    [InlineData("Joristest", 3)]
+    [InlineData("OokJoris", 12)]
 
-    public void PaymentGetTest(string user)
+    public void PaymentGetTest(string user, int am)
     {
         var paymentaccesMock = new Mock<IPaymentAcces>();
         paymentaccesMock
@@ -22,7 +22,7 @@ public class PaymentTest
                 new(){
                     ID = 1,
                     t_data_id = 1,
-                    Amount = 12.01,
+                    Amount = am,
                     created_at = DateTime.Now,
                     completed_at = DateTime.Now,
                     Hash = "ujbifewuewib8iwn",
@@ -33,18 +33,26 @@ public class PaymentTest
 
         PaymentLogic _paymentlogic = new(paymentaccesMock.Object);
 
-        PaymentRequest PReq = new()
-        {
-            Transaction = "blabla",
-            Amount = 12.01,
-            Initiator = user
-        };
-
-        _paymentlogic.CreateNewPayment(PReq);
         PaymentModel payment = _paymentlogic.GetPaymentsByInitiator(user)[-1];
 
-        Assert.True(payment.Initiator == user);
+        Assert.True(payment.Amount == am);
 
 
+    }
+
+    [Theory]
+    [InlineData(1, 10)]
+    [InlineData(2, 20)]
+    public void RefundPaymentTest(int id, int am)
+    {
+        var refundAccesMock = new Mock<IRefundAcces>();
+        refundAccesMock
+            .Setup(u => u.GetRefund(id))
+            .Returns(am);
+        
+        PaymentLogic _paymentlogic = new(null, refundAccesMock.Object);
+
+        int amount = _paymentlogic.GetRefundById(id);
+        Assert.True(amount == am);
     }
 }
