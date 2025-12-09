@@ -215,4 +215,40 @@ public class ParkingLotLogicTest
         Assert.Equal(fakelot.daytariff, result.daytariff);
         Assert.Equal(fakelot.coordinates, result.coordinates);
     }
+
+
+    [Fact]
+    public void CheckLatestParkingLotTest()
+    {
+        var access = new Mock<IParkingLotsAcces>();
+
+        var latestLot = new ParkingLotModel
+        {
+            ID = 1,
+            name = "ParkingLotA",
+            location = "Rotterdam",
+            adress = "Wijnhaven 5",
+            capacity = 100,
+            tariff = 4,
+            daytariff = 40,
+            coordinates = "1,1"
+        };
+
+        access.Setup(a => a.GetLatestLot()).Returns(latestLot);
+
+        var logic = new ParkingLotLogic(access.Object);
+
+        var result = logic.CheckLatestParkingLot();
+
+        Assert.NotNull(result);
+        Assert.Equal(latestLot.ID, result.ID);
+        Assert.Equal(latestLot.name, result.name);
+        Assert.Equal(latestLot.location, result.location);
+        Assert.Equal(latestLot.adress, result.adress);
+        Assert.Equal(latestLot.capacity, result.capacity);
+        Assert.Equal(latestLot.tariff, result.tariff);
+        Assert.Equal(latestLot.daytariff, result.daytariff);
+        Assert.Equal(latestLot.coordinates, result.coordinates);
+        
+    }
 }
