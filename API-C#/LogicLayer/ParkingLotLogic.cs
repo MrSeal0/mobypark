@@ -1,6 +1,22 @@
-public class ParkingLotLogic
+public interface IParkingLotLogic
 {
-    ParkingLotsAcces _acces = new();
+    public void CreateParkingLot(CreateLotRequest data);
+    public void EditParkingLot(int lid, EditLotRequest data);
+    public void DeleteParkingLot(int lid);
+    public bool DoesLotExist(int id);
+    public ParkingLotModel GetLotByID(int id);
+    public ParkingLotModel CheckLatestParkingLot();
+
+}
+
+public class ParkingLotLogic : IParkingLotLogic
+{
+    IParkingLotsAcces _acces;
+
+    public ParkingLotLogic(IParkingLotsAcces acces = null)
+    {
+        _acces = acces ?? new ParkingLotsAcces();
+    }
 
     public void CreateParkingLot(CreateLotRequest data)
     {
@@ -41,5 +57,10 @@ public class ParkingLotLogic
     public ParkingLotModel GetLotByID(int id)
     {
         return _acces.GetLotById(id);
+    }
+
+    public ParkingLotModel CheckLatestParkingLot()
+    {
+        return _acces.GetLatestLot();
     }
 }
