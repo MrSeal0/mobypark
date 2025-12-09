@@ -119,15 +119,66 @@ public class ParkingLotLogicTest
     }
 
 
-    // [Theory]
-    // [InlineData(1)]
-    // [InlineData(2)]
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
 
-    // public void DeleteParkingLotTest(int lid)
-    // {
-    //     var access = new Mock<IParkingLotsAcces>();
-    //     var logic = new ParkingLotLogic(access.Object);
+    public void DeleteParkingLotTest(int lid)
+    {
+        var access = new Mock<IParkingLotsAcces>();
+        var logic = new ParkingLotLogic(access.Object);
 
-    // }
+        logic.DeleteParkingLot(lid);
+
+        access.Verify(a => a.DeleteParkinglot(lid), Times.Once);
+
+    }
+
+    
+    [Fact]
+
+    public void GetAllLotsTest()
+    {
+        var access = new Mock<IParkingLotsAcces>();
+
+        var fakeLots = new List<ParkingLotModel>
+        {
+            new ParkingLotModel{ID = 1, name = "Parking1", location = "Wijnhaven", adress = "wijnhaven 34a", capacity = 10, tariff = 3, daytariff = 30, coordinates = "1,1"},
+            new ParkingLotModel{ID = 2, name = "Parking2", location = "Dordrecht", adress = "Spuiweg 20", capacity = 20, tariff = 4, daytariff = 40, coordinates = "2,2"}
+        };
+
+        access.Setup(a => a.GetAllLots()).Returns(fakeLots);
+
+        var logic = new ParkingLotLogic(access.Object);
+
+        var result = logic.GetAllLots();
+
+        Assert.NotNull(result);
+        Assert.Equal(fakeLots.Count(), result.Count());
+        Assert.Equal(fakeLots[0].name, result[0].name);
+        Assert.Equal(fakeLots[1].name, result[1].name);
+
+        access.Verify(a => a.GetAllLots(), Times.Once);
+
+
+    }
+
+
+    [Theory]
+    [InlineData(1, true)]
+    [InlineData(2, false)]
+
+    public void DoesLotExist(int lid, bool exists)
+    {
+        var access = new Mock<IParkingLotsAcces>();
+
+        access.Setup(a => a.DoesLotExist(lid)).Returns(lid == 1 ?new ParkingLotModel { ID = lid, name = "LotA"} : null);
+
+        var logic = new ParkingLotLogic(access.Object);
+
+        var result = logic.DoesLotExist(lid);
+
+        Assert.Equal(exists, result);
+    }
 
 }
