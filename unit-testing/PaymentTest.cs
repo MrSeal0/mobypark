@@ -9,32 +9,42 @@ namespace unit_testing;
 public class PaymentTest
 {
     [Theory]
-    [InlineData("Joristest", 10)]
-    [InlineData("OokJoris", 12)]
+    [InlineData("Joristest")]
+    [InlineData("OokJoris")]
 
-    public void PaymentGetTest(string user, int am)
+    public void PaymentGetTest(string user)
     {
-        var paymentLogicMock = new Mock<IPaymentLogic>();
+        var paymentaccesMock = new Mock<IPaymentAcces>();
+        paymentaccesMock
+            .Setup(u => u.GetPaymentsByInitiator(user)) // checks for set input
+            .Returns(new List<PaymentModel> // returns set value
+            {
+                new(){
+                    ID = 1,
+                    t_data_id = 1,
+                    Amount = 12.01,
+                    created_at = DateTime.Now,
+                    completed_at = DateTime.Now,
+                    Hash = "ujbifewuewib8iwn",
+                    Initiator = user,
+                    Transaction = "blabla"
+                }
+            });
+
+        PaymentLogic _paymentlogic = new(paymentaccesMock.Object);
+
         PaymentRequest PReq = new()
         {
             Transaction = "blabla",
-            Amount = am,
+            Amount = 12.01,
             Initiator = user
         };
-        
-        paymentLogicMock.Setup(p => p.CreateNewPayment(It.IsAny<PaymentRequest>())).Verifiable();
 
-        var list = new List<PaymentModel>
-        {
-            new PaymentModel { Transaction = "blabla", Amount = am, Initiator = user }
-        };
+        _paymentlogic.CreateNewPayment(PReq);
+        PaymentModel payment = _paymentlogic.GetPaymentsByInitiator(user)[-1];
 
-        paymentLogicMock.Setup(p => p.GetPaymentsByInitiator(user)).Returns(new List<PaymentModel>(list));
+        Assert.True(payment.Initiator == user);
 
-        paymentLogicMock.Object.CreateNewPayment(PReq);
-        List<PaymentModel> payments = paymentLogicMock.Object.GetPaymentsByInitiator(user);
 
-        PaymentModel lastpayment = payments.Last();
-        Assert.True(lastpayment.Amount == am && lastpayment.Transaction == "blabla");
     }
 }

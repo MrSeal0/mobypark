@@ -43,7 +43,7 @@ public class PaymentLogic : IPaymentLogic
 
     public void RefundPayment(int pid, AccountModel admin)
     {
-        PaymentModel pmodel = _paymentAccess.GetPaymentByID(pid);
+        PaymentModel pmodel = _paymentAccess.GetPaymentById(pid);
         RefundRequest RR = new()
         {
             Amount = pmodel.Amount,
