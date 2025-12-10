@@ -25,15 +25,9 @@ public class ProfileController : ControllerBase
 
         int uid = _sessionlogic.GetUserBySession(sessionkey).ID;
 
-        if (_logic.VerifyPassword(data.password, uid))
-        {
-            _logic.ChangePassword(uid, data.new_password);
-            return Ok("Password changed succesfully!");
-        }
-        else
-        {
-            return Unauthorized("current password incorrect.");
-        }
+        bool res = _logic.ChangePassword(data.password, uid, data.new_password);
+
+        return res ? Ok("Password changed succesfully!") : Unauthorized("current password incorrect.");
     }
 
 
