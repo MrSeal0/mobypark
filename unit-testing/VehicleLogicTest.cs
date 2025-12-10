@@ -41,6 +41,31 @@ public class VehicleLogicTests
     }
 
 
+
+    // Test for when user owns car
+
+    [Fact]
+
+    public void DoesUserOwnCarTestTrue()
+    {
+        string token = "token";
+        string plate = "R323PG";
+
+        var vehicle = new VehicleModel
+        {
+            user_id = 1,
+            license_plate = plate
+        };
+
+        _vehicleAccesMock.Setup(a => a.GetVehicleByLicenseplate(plate)).Returns(vehicle);
+        _sessionAccesMock.Setup(a => a.UidFromSession(token)).Returns(1);
+
+        var result = _logic.DoesUserOwnCar(token, plate);
+
+        Assert.True(result);
+    }
+
+    
     
 
 
