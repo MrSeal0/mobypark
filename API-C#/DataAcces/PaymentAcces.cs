@@ -10,7 +10,8 @@ public interface IPaymentAcces
     public void CompletePayment(int pid);
     public PaymentModel GetInfoForTData(int id);
     public void CompleteTData(int pid, TDataRequest tdata);
-    public PaymentModel GetPaymentByID(int pid);
+
+    public PaymentModel GetLastPayment();
 }
 
 public class PaymentAcces : AAcces, IPaymentAcces
@@ -55,9 +56,9 @@ public class PaymentAcces : AAcces, IPaymentAcces
         _con.Execute(sql2, new {TID = id, id = pid});
     }
 
-    public PaymentModel GetPaymentByID(int pid)
+    public PaymentModel GetLastPayment()
     {
-        string sql = $"SELECT * FROM {Table()} WHERE ID = @id";
-        return _con.QueryFirstOrDefault<PaymentModel>(sql, new { id = pid});
+        string sql = $"SELECT * FROM {Table()} ORDER BY id DESC";
+        return _con.QueryFirstOrDefault<PaymentModel>(sql);
     }
 }

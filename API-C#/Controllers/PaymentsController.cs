@@ -74,7 +74,7 @@ public class PaymentsController : ControllerBase
             return Unauthorized();
         }
 
-        _paymentLogic.RefundPayment(pid, admin);
+        _paymentLogic.RefundPayment(pid, admin.username);
 
 
 

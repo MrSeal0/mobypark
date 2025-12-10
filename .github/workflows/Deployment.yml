@@ -1,0 +1,51 @@
+name: Deploy to Ubuntu Server
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build and publish
+        run: |
+          dotnet publish -c Release -o publish
+
+      # - name: Check SSH port 22
+      #   run: |
+      #     HOST=${{ secrets.SERVER_HOST }}
+      #     if timeout 8 bash -c ">/dev/tcp/$HOST/22"; then
+      #       echo "SSH port 22 open on $HOST"
+      #     else
+      #       echo "SSH port 22 closed/unreachable on $HOST"
+      #       exit 2
+      #     fi
+
+      - name: Copy files to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "./publish/"
+          target: "/var/www/myapi"
+
+      - name: Restart service
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            sudo systemctl restart myapi
+            sudo systemctl status myapi --no-pager
