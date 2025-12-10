@@ -9,32 +9,50 @@ namespace unit_testing;
 public class PaymentTest
 {
     [Theory]
-    [InlineData("Joristest", 10)]
+    [InlineData("Joristest", 3)]
     [InlineData("OokJoris", 12)]
 
     public void PaymentGetTest(string user, int am)
     {
-        var paymentLogicMock = new Mock<IPaymentLogic>();
-        PaymentRequest PReq = new()
-        {
-            Transaction = "blabla",
-            Amount = am,
-            Initiator = user
-        };
+        var paymentaccesMock = new Mock<IPaymentAcces>();
+        paymentaccesMock
+            .Setup(u => u.GetPaymentsByInitiator(user)) // checks for set input
+            .Returns(new List<PaymentModel> // returns set value
+            {
+                new(){
+                    ID = 1,
+                    t_data_id = 1,
+                    Amount = am,
+                    created_at = DateTime.Now,
+                    completed_at = DateTime.Now,
+                    Hash = "ujbifewuewib8iwn",
+                    Initiator = user,
+                    Transaction = "blabla"
+                }
+            });
+
+        PaymentLogic _paymentlogic = new(paymentaccesMock.Object);
+
+        PaymentModel payment = _paymentlogic.GetPaymentsByInitiator(user)[-1];
+
+        Assert.True(payment.Amount == am);
+
+
+    }
+
+    [Theory]
+    [InlineData(1, 10)]
+    [InlineData(2, 20)]
+    public void RefundPaymentTest(int id, int am)
+    {
+        var refundAccesMock = new Mock<IRefundAcces>();
+        refundAccesMock
+            .Setup(u => u.GetRefund(id))
+            .Returns(am);
         
-        paymentLogicMock.Setup(p => p.CreateNewPayment(It.IsAny<PaymentRequest>())).Verifiable();
+        PaymentLogic _paymentlogic = new(null, refundAccesMock.Object);
 
-        var list = new List<PaymentModel>
-        {
-            new PaymentModel { Transaction = "blabla", Amount = am, Initiator = user }
-        };
-
-        paymentLogicMock.Setup(p => p.GetPaymentsByInitiator(user)).Returns(new List<PaymentModel>(list));
-
-        paymentLogicMock.Object.CreateNewPayment(PReq);
-        List<PaymentModel> payments = paymentLogicMock.Object.GetPaymentsByInitiator(user);
-
-        PaymentModel lastpayment = payments.Last();
-        Assert.True(lastpayment.Amount == am && lastpayment.Transaction == "blabla");
+        int amount = _paymentlogic.GetRefundById(id);
+        Assert.True(amount == am);
     }
 }
