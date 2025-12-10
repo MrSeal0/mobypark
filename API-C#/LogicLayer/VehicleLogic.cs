@@ -19,8 +19,14 @@ public interface IVehicleLogic
 
 public class VehicleLogic : IVehicleLogic
 {
-    VehicleAcces _acces = new();
-    SessionAcces _sessionacces = new();
+    IVehicleAcces _acces;
+    ISessionAcces _sessionacces;
+
+    public VehicleLogic(IVehicleAcces acces = null, ISessionAcces sessionAcces = null)
+    {
+        _acces = acces ?? new VehicleAcces();
+        _sessionacces = sessionAcces ?? new SessionAcces();
+    }
     public bool IsVehicleRegisterd(string plate)
     {
         return GetVehicleByPlate(plate) != null ? true : false;
