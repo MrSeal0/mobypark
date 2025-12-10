@@ -1,9 +1,15 @@
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Mvc;
 
 public class ProfileLogic
 {
     ArgonHasher argonhasher = new();
-    UsersAcces _acces = new();
+    IUsersAcces _acces;
+
+    public ProfileLogic(IUsersAcces acces = null)
+    {
+        _acces = acces ?? new UsersAcces();
+    }
 
     public bool VerifyPassword(string password, int uid)
     {
@@ -23,10 +29,18 @@ public class ProfileLogic
         return false;
     }
 
-    public void ChangePassword(int uid, string password)
+    public bool ChangePassword(string oldpassword, int uid, string new_password)
     {
-        string hashedpassword = argonhasher.HashPassword(password);
-        _acces.UpdatePasswordByID(uid, hashedpassword);
+        if (VerifyPassword(oldpassword, uid))
+        {
+            string hashedpassword = argonhasher.HashPassword(new_password);
+            _acces.UpdatePasswordByID(uid, hashedpassword);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public AccountModel GetUserInfo(int uid)
