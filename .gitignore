@@ -13,6 +13,7 @@ API-C#/DataSources/TestDataBase.db
 *.rsuser
 *.suo
 *.user
+
 *.userosscache
 *.sln.docstates
 
